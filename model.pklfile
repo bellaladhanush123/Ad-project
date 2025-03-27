@@ -1,0 +1,14 @@
+import nbformat
+from nbconvert import PythonExporter
+
+# Load the notebook
+notebook_path = "/mnt/data/CO2 Emissions (2) (1).ipynb"
+with open(notebook_path, "r", encoding="utf-8") as f:
+    notebook = nbformat.read(f, as_version=4)
+
+# Convert the notebook to a Python script
+python_exporter = PythonExporter()
+source_code, _ = python_exporter.from_notebook_node(notebook)
+
+# Show first few lines of the Python script to check what's in it
+source_code.splitlines()[:20]
