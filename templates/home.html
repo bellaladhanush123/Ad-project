@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CO2 Emissions Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 300px;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>CO2 Emissions Predictor</h1>
+    <form id="predictForm">
+        <!-- Replace these with actual model features -->
+        <input type="number" id="engine_size" placeholder="Engine Size (e.g., 2.0)" required><br>
+        <input type="number" id="cylinders" placeholder="Cylinders (e.g., 4)" required><br>
+        <input type="number" id="fuel_consumption" placeholder="Fuel Consumption (L/100km)" required><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById("predictForm");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                "Engine Size": parseFloat(document.getElementById("engine_size").value),
+                "Cylinders": parseInt(document.getElementById("cylinders").value),
+                "Fuel Consumption": parseFloat(document.getElementById("fuel_consumption").value)
+            };
+
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById("result").innerText = result.prediction 
+                ? "Predicted CO2 Emissions: " + result.prediction[0] 
+                : "Error: " + result.error;
+        });
+    </script>
+</body>
+</html>
